@@ -1,0 +1,12 @@
+*{
+    text-align: center;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+
+}
+.d-flex {
+    display: flex;
+    justify-content: space-around;
+}
