@@ -1,1 +1,19 @@
-<p>app-converter works!</p>
+<div class="d-flex">
+    <div>
+      <input (keyup)="convertCurrency()" [(ngModel)]="amount" type="number" />
+      <select (change)="updateBaseCurrency()" [(ngModel)]="baseCurrency">
+        <option value="UAH">UAH</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+      </select>
+    </div>
+    <div>
+      <input (keyup)="updateFirstInput()" [(ngModel)]="convertedAmount" />
+      <select (change)="updateTargetCurrency()" [(ngModel)]="targetCurrency">
+        <option value="UAH">UAH</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+      </select>
+    </div>
+  </div>
+  

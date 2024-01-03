@@ -1,58 +1,62 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CurrencyService } from '../services/currency.service';
+import { Subscription } from 'rxjs';
+import { ExchangeRates } from 'src/Interfaces/interfaces';
 
 @Component({
   selector: 'app-converter',
   styleUrls: ['./app-converter.component.css'],
-  template: `
-    <div class="d-flex">
-      <div>
-        <input (keyup)="convertCurrency()" [(ngModel)]="amount" type="number" />
-        <select (change)="updateBaseCurrency()"   [(ngModel)]="baseCurrency">
-          <option value="UAH">UAH</option>
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-        </select>
-      </div>
-      <div>
-        <input (keyup)="updateFirstInput()" [(ngModel)]="convertedAmount" />
-        <select (change)="updateTargetCurrency()" [(ngModel)]="targetCurrency">
-          <option value="UAH">UAH</option>
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-        </select>
-      </div>
-    </div>
-  `,
+  templateUrl: './app-converter.component.html',
 })
-export class AppConverterComponent {
+export class AppConverterComponent implements OnDestroy {
   amount: number = 1;
   baseCurrency: string = 'UAH';
   targetCurrency: string = 'UAH';
   convertedAmount: number = 1;
 
+  private subscription!: Subscription;
+
   constructor(private currencyService: CurrencyService) {}
 
   convertCurrency() {
-    this.currencyService
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    this.subscription = this.currencyService
       .getExchangeRates(this.baseCurrency, this.targetCurrency)
-      .subscribe((data: any) => {
+      .subscribe((data: ExchangeRates) => {
         const rate = data.conversion_rates[this.targetCurrency];
         this.convertedAmount = Number((this.amount * rate).toFixed(2));
       });
   }
+
   updateFirstInput() {
-    this.currencyService
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    this.subscription = this.currencyService
       .getExchangeRates(this.targetCurrency, this.baseCurrency)
-      .subscribe((data: any) => {
+      .subscribe((data: ExchangeRates) => {
         const rate = data.conversion_rates[this.baseCurrency];
         this.amount = Number((this.convertedAmount * rate).toFixed(2));
       });
   }
+
   updateBaseCurrency() {
-    this.convertCurrency()
+    this.convertCurrency();
   }
+
   updateTargetCurrency() {
     this.updateFirstInput();
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 }
+
+

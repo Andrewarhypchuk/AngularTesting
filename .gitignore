@@ -1,1 +1,42 @@
-node_modules
+# Node modules
+node_modules/
+
+# Compiled output
+/dist/
+/tmp/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IntelliJ IDEA
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Angular-specific
+/e2e/*.js
+/e2e/*.map
+/e2e/*.ts
+/e2e/*.json
+
+# Environment variables
+.env
+.env.prod
+.env.stage
+.env.prod.stage
+
+# Other
+package-lock.json
+yarn.lock
+
+*.json
+

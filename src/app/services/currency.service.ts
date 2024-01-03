@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ExchangeRates } from 'src/Interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -10,14 +11,17 @@ export class CurrencyService {
 
   constructor(private http: HttpClient) {}
 
-  getExchangeRates(baseCurrency: string, targetCurrency: string): Observable<any> {
+  getExchangeRates(baseCurrency: string, targetCurrency: string): Observable<ExchangeRates> {
     const url = `${this.apiUrl}${baseCurrency}`;
-    return this.http.get(url);
+    return this.http.get<ExchangeRates>(url);
   }
-  getUAHtoUSD(): Observable<any> {
+
+  getUAHtoUSD(): Observable<ExchangeRates> {
     return this.getExchangeRates('UAH', 'USD');
   }
-  getUAHtoEUR(): Observable<any> {
+
+  getUAHtoEUR(): Observable<ExchangeRates> {
     return this.getExchangeRates('UAH', 'EUR');
   }
 }
+
